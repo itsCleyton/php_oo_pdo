@@ -30,27 +30,34 @@ class UsuarioDao {
 
     }
     
-    //função para atualizar uma unidade com try catch
-    public function update(Unidade $u){
+    //função para atualizar um usuário com try catch
+    public function update(Usuario $u){
         try{
-            $sql = "UPDATE unidades SET nomeUnidade = ? WHERE id = ?";
+            $sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, cpf = ?, dtNasc = ?, tipo = ?, ativo = ? WHERE id = ?";
             $stmt = Conexao::getConn()->prepare($sql);
-            $stmt-> bindValue(1, $u->getNomeUnidade());
+            $stmt-> bindValue(1, $u->getNome());
+            $stmt-> bindValue(2, $u->getEmail());
+            $stmt-> bindValue(3, $u->getSenha());
+            $stmt-> bindValue(4, $u->getCpf());
+            $stmt-> bindValue(5, $u->getDtNasc());
+            $stmt-> bindValue(6, $u->getTipo());
+            $stmt-> bindValue(7, $u->getAtivo());
             $stmt->execute();
         } catch(PDOException $e){
-            echo "Erro ao atualizar unidade: ".$e->getMessage();
+            echo "Erro ao atualizar usuário: ".$e->getMessage();
         }
     }
 
-    //função para deletar uma unidade com try catch
+    //função para deletar um usuário com try catch
     public function delete($id){
         try{
-            $sql = "DELETE FROM unidades WHERE id = ?";
+            $sql = "UPDATE usuario SET ativo = ? WHERE id = ?";
             $stmt = Conexao::getConn()->prepare($sql);
-            $stmt-> bindValue(1, $id);
+            $stmt-> bindValue(1, 0);
+            $stmt-> bindValue(2, $id);
             $stmt->execute();
         } catch(PDOException $e){
-            echo "Erro ao deletar unidade: ".$e->getMessage();
+            echo "Erro ao desativar o usuário: ".$e->getMessage();
         }
     }
 }
